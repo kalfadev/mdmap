@@ -1,0 +1,6 @@
+/target
+.claude/*
+__pycache__/
+.harno/
+CLAUDE.md
+.DS_Store

@@ -1,0 +1,4 @@
+# What typos (the spell preset, in ci) must not call a typo.
+[default]
+# node ids are six random hex characters
+extend-ignore-re = ["\\b[0-9a-f]{6}\\b"]

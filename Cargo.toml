@@ -1,0 +1,38 @@
+[package]
+name = "mdmap"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "The markdown docs of a project as one tree an agent walks by id and path"
+repository = "https://github.com/kalfadev/mdmap"
+homepage = "https://github.com/kalfadev/mdmap"
+readme = "README.md"
+keywords = ["markdown", "docs", "ai", "agents", "cli"]
+categories = ["command-line-utilities", "development-tools", "text-processing"]
+
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "mdmap"
+path = "src/main.rs"
+
+[dependencies]
+pulldown-cmark = { version = "0.13", default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+serde-saphyr = "1"
+globset = "0.4"
+glob = "0.3"
+similar = "2"
+fastrand = "2"
+
+[dev-dependencies]
+insta = "1"
+tempfile = "3"
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"

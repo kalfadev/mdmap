@@ -1,0 +1,30 @@
+# The docs of this repository as one tree; mdmap reads this file itself.
+roots: [docs/]
+ignore: []  # globs relative to the root, such as drafts/**
+
+warn:
+  # Characters of prose: the block a verify comment names is a command output and is
+  # not counted (Code map: Reading). A longer node comes with advice to split it.
+  body: 4000
+# What a verify line may run: the words it starts with, and the command they
+# stand for, with {args} taking the rest of the line. An entry without a command
+# runs the line as it is written.
+verify:
+  timeout: 900  # seconds, unless the entry says otherwise
+  run:
+    - command: outline
+      run: python3 scripts/sym.py outline {args}
+    - command: deps
+      # the first line drops the path of the checkout, which differs on every machine
+      run: sh -c "cargo tree -e normal --depth 1 | sed '1s/ (.*//'"
+    # the installed mdmap, which the install preset puts into ~/.cargo/bin
+    - mdmap help
+# What a verb may not reach, and everything under it (Guide: Settings). paths are
+# globs relative to the project, docs/history/** matching the folder too; ids are
+# heading ids. read closes a node to every verb, and ls prints it as [denied];
+# update closes it to update, and to add or move into it; remove closes it to
+# remove, and to move out of it.
+deny:
+  read: {paths: [], ids: []}
+  update: {paths: [], ids: []}
+  remove: {paths: [], ids: []}
