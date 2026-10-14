@@ -375,7 +375,7 @@ tests/write.rs
 
 ## Checks: check, lint, verify {3d7ee4}
 
-Three ways to ask whether the docs are right. `check.rs`: can the tree be read from these files: a setext heading (an underline, not `#`), a missing or a duplicate id; any heading levels are fine. `--fix` touches structure only. Every call runs the id part itself before it reads, under a lock on the config file (`load_with_ids` in src/cli.rs), and a call that read a file with a check problem starts with a warning. `lint.rs`: broken links, stale paths, a verify comment with nothing to compare, an id in inline code (`{3d7ee4}`) that no heading has, a bold title right before such an id (`**Title**`, or `**File: Title**` led by the titles above it) that is not the title of its heading, and an `ignore` pattern that no path under the roots matches, since a pattern written from the project instead of the root hides nothing and lets its files into the corpus; the walk of a load marks each pattern a path matched (`unused_ignores`). A `deny` entry that names no node, an id no heading has or a path no folder or file matches, is reported the same way, since it closes nothing (`unused_denies`, tested in tests/deny.rs). It reports, never fixes. An example id in prose is the id of the heading that holds it, so it names a heading that is there. `verify.rs`: `<!-- verify: <command> -->` and the first code span after it in the same body; the command output is compared with the span; `--fix` rewrites only the span; `verify <id>|<path>` checks one node. `exec.rs` runs the command: `split` into words, `allowed` against `verify.run`, `with_args`, `argv` with its globs expanded, `exec` under a timeout.
+Three ways to ask whether the docs are right. `check.rs`: can the tree be read from these files: a setext heading (an underline, not `#`), a missing or a duplicate id; any heading levels are fine. `--fix` touches structure only. Every call runs the id part itself before it reads, under a lock on the config file (`load_with_ids` in src/cli.rs), and a call that read a file with a check problem starts with a warning. `lint.rs`: broken links, stale paths, a verify comment with nothing to compare, an id in inline code (`{3d7ee4}`) that no heading has, a bold title right before such an id (`**Title**`, or `**File: Title**` led by the titles above it) that is not the title of its heading, and an `ignore` pattern that no path under the roots matches, since a pattern written from the project instead of the root hides nothing and lets its files into the corpus; the walk of a load marks each pattern a path matched (`unused_ignores`). A `deny` entry that names no node, an id no heading has or a path no folder or file matches, is reported the same way, since it closes nothing (`unused_denies`, tested in tests/deny.rs). It reports, never fixes. An example id in prose is the id of the heading that holds it, so it names a heading that is there. `verify.rs`: `<!-- verify: <command> -->` and the first code span after it in the same body; the command output is compared with the span; `--fix` rewrites only the span; `verify <id>|<path>` checks one node. `exec.rs` runs the command: `split` into words, `allowed` against `verify.run`, `with_args`, `argv` with its globs expanded (a path with `/` on every platform), `exec` under a timeout.
 
 Rules. `verify` runs only what `verify.run` of the settings allows: a line must start with the words of an entry, and what runs is the command of that entry with the other words where `{args}` is, or the line itself when the entry names no command. There is no shell, each command runs under the timeout of its entry, else `verify.timeout`; a line outside the list is refused in the report; a comment without a span does not run. Only stdout is compared: stderr is dropped, and a nonzero exit fails the node. `check --fix` never touches prose. The id pass of every call writes the id of a setext heading at the end of its text and leaves the underline: turning it into a `#` line is structure, which `check --fix` alone does.
 
@@ -407,13 +407,13 @@ src/check.rs
 src/exec.rs
   20-25  pub struct Word
   27-87  pub fn split(s: &str) -> R<Vec<Word>>
-  91-121  pub fn argv(words: &[Word], dir: &Path) -> Vec<String>
-  126-139  pub fn allowed<'a>(allow: &'a [Allow], words: &[Word]) -> Option<&'a Allow>
-  143-151  pub fn refusal_name(allow: &[Allow], words: &[Word], raw: &str) -> String
-  155-236  pub fn exec(command: &str, dir: &Path, timeout: Duration, stderr: bool) -> (i32, String, String, f64)
-  238-240  fn secs(started: Instant) -> f64
-  244-250  pub fn with_args(command: &str, args: &[String]) -> String
-  253-255  fn single_quote(s: &str) -> String
+  92-124  pub fn argv(words: &[Word], dir: &Path) -> Vec<String>
+  129-142  pub fn allowed<'a>(allow: &'a [Allow], words: &[Word]) -> Option<&'a Allow>
+  146-154  pub fn refusal_name(allow: &[Allow], words: &[Word], raw: &str) -> String
+  158-239  pub fn exec(command: &str, dir: &Path, timeout: Duration, stderr: bool) -> (i32, String, String, f64)
+  241-243  fn secs(started: Instant) -> f64
+  247-253  pub fn with_args(command: &str, args: &[String]) -> String
+  256-258  fn single_quote(s: &str) -> String
 src/lint.rs
   13-16  pub struct Finding
   18-73  pub fn findings(g: &Graph) -> Vec<Finding>

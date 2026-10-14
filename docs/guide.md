@@ -58,3 +58,9 @@ corpus
 
 Every verb takes --json. The settings are mdmap.yml at the root of the project.
 ```
+
+## Contributing {709579}
+
+`main` takes pull requests only: work on a branch and open a pull request. `.github/workflows/test.yml` runs `cargo test --locked` on Linux, macOS and Windows for every pull request and every push to `main`, and its jobs `linux`, `macos` and `windows` must pass before a pull request merges. The verify tests run `ls`, `echo`, `printf` and `sleep` as programs; on Windows they come from `C:\Program Files\Git\usr\bin`, which the workflow adds to the end of PATH, and a Windows machine needs the same to run the tests.
+
+A mac compiles neither Linux nor Windows, so before a commit these pass too (`rustup target add x86_64-unknown-linux-gnu x86_64-pc-windows-gnu` once): `cargo clippy --target x86_64-unknown-linux-gnu --all-targets --locked` and `cargo clippy --target x86_64-pc-windows-gnu --all-targets --locked`.

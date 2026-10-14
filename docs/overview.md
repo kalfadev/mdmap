@@ -46,6 +46,7 @@ mdmap show 3f9c2a (cli::main)
 | `src/verify.rs`, `src/exec.rs` | `verify`: a verify block against its command; `exec`: runs that command without a shell, under `verify.run` and a timeout (`3d7ee4`) |
 | `tests/` | behaviour tests, in-process against temporary projects, one file per verb or area; `tests/common/mod.rs` holds the sample corpus (`e5a6a3`) |
 | `mdmap.yml` | the settings of this corpus |
+| `.github/workflows/test.yml` | the tests on Linux, macOS and Windows for every pull request and every push to `main` (**Guide: Contributing**) |
 | `dist-workspace.toml`, `.github/workflows/release.yml` | the release: cargo-dist settings and the workflow `dist generate` writes from them (**Guide: Install**) |
 | `scripts/sym.py` | the items of source files with their lines, through ast-grep; the `outline` verify blocks of **Code map** run it |
 | `docs/` | this corpus |

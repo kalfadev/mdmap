@@ -86,8 +86,9 @@ pub fn split(s: &str) -> R<Vec<Word>> {
     Ok(words)
 }
 
-/// The argument vector: globs expanded against `dir`, sorted; a glob that
-/// matches nothing stays as written.
+/// The argument vector: globs expanded against `dir`, sorted, each path
+/// written with `/` on every platform; a glob that matches nothing stays as
+/// written.
 pub fn argv(words: &[Word], dir: &Path) -> Vec<String> {
     let mut out = Vec::new();
     for w in words {
@@ -101,11 +102,13 @@ pub fn argv(words: &[Word], dir: &Path) -> Vec<String> {
                 paths
                     .flatten()
                     .map(|m| {
-                        if Path::new(p).is_absolute() {
+                        let s = if Path::new(p).is_absolute() {
                             m.to_string_lossy().to_string()
                         } else {
                             m.strip_prefix(dir).unwrap_or(&m).to_string_lossy().to_string()
-                        }
+                        };
+                        // Windows takes `/` too, so a path reads the same as on Unix.
+                        if cfg!(windows) { s.replace('\\', "/") } else { s }
                     })
                     .collect()
             })

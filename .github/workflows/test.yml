@@ -1,0 +1,37 @@
+# The tests on Linux, macOS and Windows, for every push to main and every pull
+# request. The jobs are named linux, macos and windows: the ruleset of main
+# requires these three checks before a pull request merges.
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --locked
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --locked
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      # The verify tests run ls, echo, printf and sleep as programs, with no
+      # shell; Git for Windows carries them in usr\bin. It goes at the end of
+      # PATH, so no Windows tool is shadowed.
+      - shell: pwsh
+        run: |
+          $env:PATH = "$env:PATH;C:\Program Files\Git\usr\bin"
+          cargo test --locked
