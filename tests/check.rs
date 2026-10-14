@@ -11,7 +11,8 @@ fn snapshot(p: &Project) -> BTreeMap<String, String> {
     fn walk(dir: &std::path::Path, base: &std::path::Path, out: &mut BTreeMap<String, String>) {
         for e in std::fs::read_dir(dir).unwrap().flatten() {
             let path = e.path();
-            let rel = path.strip_prefix(base).unwrap().to_string_lossy().to_string();
+            // With `/` on every platform, as mdmap names a path.
+            let rel = path.strip_prefix(base).unwrap().to_string_lossy().replace('\\', "/");
             if rel.starts_with(".harno/log") || rel == ".gitignore" {
                 continue;
             }

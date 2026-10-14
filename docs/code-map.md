@@ -427,20 +427,20 @@ src/verify.rs
   73-221  pub fn verify(g: &Graph, node: Option<usize>, fix: bool, json_out: bool) -> R<Output>
 tests/check.rs
   5-5  mod common;
-  10-28  fn snapshot(p: &Project) -> BTreeMap<String, String>
-  11-24    fn walk(dir: &std::path::Path, base: &std::path::Path, out: &mut BTreeMap<String, String>)
-  31-36  fn a_clean_corpus_has_no_problems()
-  39-50  fn check_reports_structure_problems_and_writes_nothing_for_them()
-  53-74  fn every_call_gives_every_node_an_id_before_it_reads()
-  77-85  fn autofix_writes_ids_only_and_leaves_structure_to_check_fix()
-  88-102  fn the_id_pass_of_a_read_leaves_a_setext_heading_setext()
-  105-138  fn fix_closes_every_problem_and_a_second_run_writes_nothing()
-  141-154  fn fix_does_not_touch_bodies_or_other_files()
-  157-166  fn fix_reports_what_it_fixed()
-  169-175  fn a_missing_root_is_an_empty_folder()
-  178-186  fn a_call_that_reads_a_broken_file_starts_with_a_warning()
-  189-195  fn check_json()
-  198-215  fn parallel_calls_agree_on_the_ids_they_write()
+  10-29  fn snapshot(p: &Project) -> BTreeMap<String, String>
+  11-25    fn walk(dir: &std::path::Path, base: &std::path::Path, out: &mut BTreeMap<String, String>)
+  32-37  fn a_clean_corpus_has_no_problems()
+  40-51  fn check_reports_structure_problems_and_writes_nothing_for_them()
+  54-75  fn every_call_gives_every_node_an_id_before_it_reads()
+  78-86  fn autofix_writes_ids_only_and_leaves_structure_to_check_fix()
+  89-103  fn the_id_pass_of_a_read_leaves_a_setext_heading_setext()
+  106-139  fn fix_closes_every_problem_and_a_second_run_writes_nothing()
+  142-155  fn fix_does_not_touch_bodies_or_other_files()
+  158-167  fn fix_reports_what_it_fixed()
+  170-176  fn a_missing_root_is_an_empty_folder()
+  179-187  fn a_call_that_reads_a_broken_file_starts_with_a_warning()
+  190-196  fn check_json()
+  199-216  fn parallel_calls_agree_on_the_ids_they_write()
 tests/verify.rs
   4-4  mod common;
   8-14  fn project() -> Project

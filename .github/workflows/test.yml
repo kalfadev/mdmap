@@ -1,6 +1,7 @@
 # The tests on Linux, macOS and Windows, for every push to main and every pull
 # request. The jobs are named linux, macos and windows: the ruleset of main
-# requires these three checks before a pull request merges.
+# requires these three checks before a pull request merges. --no-fail-fast runs
+# every test file, so one failure does not hide the others.
 name: Test
 
 on:
@@ -14,14 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --locked
+      - run: cargo test --locked --no-fail-fast
 
   macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --locked
+      - run: cargo test --locked --no-fail-fast
 
   windows:
     runs-on: windows-latest
@@ -34,4 +35,4 @@ jobs:
       - shell: pwsh
         run: |
           $env:PATH = "$env:PATH;C:\Program Files\Git\usr\bin"
-          cargo test --locked
+          cargo test --locked --no-fail-fast
